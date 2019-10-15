@@ -1,0 +1,2 @@
+include ':app', ':samplemodule'
+rootProject.name='Sample'

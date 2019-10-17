@@ -1,4 +1,4 @@
-package praneeth.com.sample.adapters
+package praneeth.com.sample.domain.adapters
 
 import android.view.ViewGroup
 import android.widget.TextView

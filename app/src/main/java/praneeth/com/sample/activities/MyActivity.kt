@@ -11,14 +11,17 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import org.jetbrains.anko.find
 import praneeth.com.sample.R
+import praneeth.com.sample.domain.service.API_KEY
 import praneeth.com.sample.domain.service.LocationServiceHelper
-import praneeth.com.sample.utils.ServiceAndUIHelper
+import praneeth.com.sample.domain.service.WeatherService
+import praneeth.com.sample.domain.service.WeatherServiceController
 
 class MyActivity : AppCompatActivity() {
+    private val LOCATION_REQUEST_CODE = 101
+
     private var googleApiClient: GoogleApiClient? = null
     private val context = this
-
-    private val LOCATION_REQUEST_CODE = 101
+    private val forecastApi: WeatherService by lazy { WeatherService.create() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,13 +29,14 @@ class MyActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         initGoogleApiClient()
 
-        val forecast_list: RecyclerView = find(R.id.forecast_list)
-        forecast_list.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-
         val locationService = LocationServiceHelper(context)
         locationService.getCurrentLocation(googleApiClient)
 
-        ServiceAndUIHelper().performServiceAndPaintUI(locationService, forecast_list)
+        val forecast_list: RecyclerView = find(R.id.forecast_list)
+        forecast_list.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+        forecastApi.getForecast(API_KEY, locationService.latitude, locationService.longitude)
+            .enqueue(WeatherServiceController(forecast_list))
     }
 
     override fun onStart() {

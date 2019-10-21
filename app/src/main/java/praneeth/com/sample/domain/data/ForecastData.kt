@@ -1,13 +1,9 @@
 package praneeth.com.sample.domain.data
 
+/**
+ * Created by Praneeth on 2019-10-18.
+ */
 data class ForecastData(
-    val latitude: Double,
-    val longitude: Double,
-    val timezone: String,
-    val currently: Currently,
-    val minutely: Minutely,
-    val hourly: Hourly,
-    val daily: Daily,
-    val flags: Flags,
-    val offset: Long
+    val dailyData : DailyForecastData,
+    val weeklyData : WeeklyForecastListData
 )

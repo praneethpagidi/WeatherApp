@@ -2,8 +2,9 @@ package praneeth.com.sample.domain.mappers
 
 
 import android.util.Log
-import praneeth.com.sample.domain.data.Forecast
-import praneeth.com.sample.domain.data.ForecastData
+import praneeth.com.sample.domain.data.DailyForecastData
+import praneeth.com.sample.domain.data.ForecastResponse
+import praneeth.com.sample.domain.data.WeekForecast
 import java.util.*
 import kotlin.collections.ArrayList
 /**
@@ -13,8 +14,8 @@ class ForecastDataMapper {
 
     private val daysList = listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
 
-    fun convertToWeeklyForecastList(forecastData: ForecastData) : List<Forecast> {
-        val forecastList: ArrayList<Forecast> = ArrayList()
+    fun convertToWeeklyForecastList(forecastData: ForecastResponse) : List<WeekForecast> {
+        val forecastList: ArrayList<WeekForecast> = ArrayList()
         var dayCount = Calendar.getInstance()[Calendar.DAY_OF_WEEK] - 1
 
         for (data in forecastData.daily.data) {
@@ -24,10 +25,18 @@ class ForecastDataMapper {
 
             val today = daysList.get(dayCount)
             Log.d("current day", today)
-            val forecast = Forecast(today, data.summary, data.temperatureHigh.toInt(), data.temperatureLow.toInt())
+            val forecast = WeekForecast(today, data.summary, data.temperatureHigh.toInt(), data.temperatureLow.toInt())
             forecastList.add(forecast)
             dayCount++
         }
         return forecastList
+    }
+
+    fun convertToDailyData(forecastData: ForecastResponse) : DailyForecastData {
+        return DailyForecastData(forecastData.currently.summary,
+            forecastData.currently.temperature.toString(),
+            forecastData.currently.precipProbability.toString(),
+            forecastData.currently.windSpeed.toString(),
+            forecastData.currently.icon)
     }
 }

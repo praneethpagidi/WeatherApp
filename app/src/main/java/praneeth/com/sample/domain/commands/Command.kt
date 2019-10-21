@@ -1,4 +1,4 @@
-package praneeth.com.sample.domain.service
+package praneeth.com.sample.domain.commands
 
 /**
  * Created by Praneeth on 2019-10-17.

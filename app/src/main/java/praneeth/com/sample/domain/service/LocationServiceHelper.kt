@@ -13,10 +13,13 @@ import com.google.android.gms.location.LocationServices
  * Created by Praneeth on 2019-10-16.
  */
 
-class LocationService(context: Context) {
+class LocationServiceHelper(context: Context) {
 
     private val activity = context as Activity
     private val LOCATION_REQUEST_CODE = 101
+    //default lat and long - Houston
+    var latitude = "29.7604"
+    var longitude = "-95.3698"
 
     fun getCurrentLocation(googleApiClient: GoogleApiClient?) {
         //Checking if the location permission is granted
@@ -31,14 +34,8 @@ class LocationService(context: Context) {
         val fusedLocationApi = LocationServices.FusedLocationApi
         val location = fusedLocationApi.getLastLocation(googleApiClient)
 
-        //default lat and long - Houston
-        var latitude = "29.7604"
-        var longitude = "-95.3698"
-
-        //In some rare cases Location obtained can be null
         if (location == null) {
             Log.d("LOCATION STATUS ", "Failed")
-            WeatherAPI().getWeatherForCurrentLocation(longitude, latitude)
             return
         }
         else {
@@ -46,7 +43,5 @@ class LocationService(context: Context) {
             latitude = location.latitude.toString()
             longitude = location.longitude.toString()
         }
-
-        WeatherAPI().getWeatherForCurrentLocation(longitude, latitude)
     }
 }

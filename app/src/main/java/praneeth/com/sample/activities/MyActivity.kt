@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.card.MaterialCardView
 import org.jetbrains.anko.find
 import praneeth.com.sample.R
-import praneeth.com.sample.domain.service.API_KEY
+import praneeth.com.sample.domain.Utils.API_KEY
 import praneeth.com.sample.domain.service.LocationServiceHelper
 import praneeth.com.sample.domain.service.WeatherService
 import praneeth.com.sample.domain.service.WeatherServiceController
@@ -32,11 +33,12 @@ class MyActivity : AppCompatActivity() {
         val locationService = LocationServiceHelper(context)
         locationService.getCurrentLocation(googleApiClient)
 
+        val day_container: MaterialCardView = find(R.id.day_contianer)
         val forecast_list: RecyclerView = find(R.id.forecast_list)
         forecast_list.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
 
-        forecastApi.getForecast(API_KEY, locationService.latitude, locationService.longitude)
-            .enqueue(WeatherServiceController(forecast_list))
+        forecastApi.getForecast(API_KEY, LocationServiceHelper.latitude, LocationServiceHelper.longitude)
+            .enqueue(WeatherServiceController(day_container, forecast_list))
     }
 
     override fun onStart() {

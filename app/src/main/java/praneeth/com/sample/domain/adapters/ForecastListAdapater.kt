@@ -5,10 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.jetbrains.anko.find
 import praneeth.com.sample.R
 import praneeth.com.sample.domain.data.WeekForecast
+import praneeth.com.sample.domain.mappers.ForecastImageMapper
 
 
 /**
@@ -16,21 +18,18 @@ import praneeth.com.sample.domain.data.WeekForecast
  */
 class ForecastListAdapater(val items: List<WeekForecast>) :
     RecyclerView.Adapter<ForecastListAdapater.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.weekly_card, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.weekly_container, parent, false)
         return ViewHolder(view)
     }
 
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(items[position]){
-            holder.tv_day.text = day
-            holder.tv_tempHigh.text = high.toString()
-            holder.tv_tempLow.text = low.toString()
-            holder.tv_description.text = description
-        }
+        holder.bindData(items[position])
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -40,7 +39,19 @@ class ForecastListAdapater(val items: List<WeekForecast>) :
         val tv_tempLow: TextView = view.find(R.id.tv_lowTemp)
         val tv_description: TextView = view.find(R.id.tv_description)
 
+        fun bindData(weekForecast: WeekForecast) {
+            with(weekForecast) {
+                tv_day.text = day
+                tv_tempHigh.text = high
+                tv_tempLow.text = low
+                tv_description.text = description
+                iv_weather.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        itemView.context,
+                        ForecastImageMapper.getImage(icon)
+                    )
+                )
+            }
+        }
     }
-
-
 }

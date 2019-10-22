@@ -17,17 +17,31 @@ class LocationServiceHelper(context: Context) {
 
     private val activity = context as Activity
     private val LOCATION_REQUEST_CODE = 101
-    //default lat and long - Houston
-    var latitude = "29.7604"
-    var longitude = "-95.3698"
+
+
+    companion object {
+        //default lat and long - Houston
+        var latitude = "29.7604"
+        var longitude = "-95.3698"
+    }
 
     fun getCurrentLocation(googleApiClient: GoogleApiClient?) {
         //Checking if the location permission is granted
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(
+        if (ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                activity, arrayOf(
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_REQUEST_CODE)
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ), LOCATION_REQUEST_CODE
+            )
             return
         }
         //Fetching location using FusedLOcationProviderAPI
@@ -37,9 +51,11 @@ class LocationServiceHelper(context: Context) {
         if (location == null) {
             Log.d("LOCATION STATUS ", "Failed")
             return
-        }
-        else {
-            Log.d("LOCATION STATUS: ", "Succesfull, the latitude is ${location.latitude}, and the longitude is ${location.longitude}")
+        } else {
+            Log.d(
+                "LOCATION STATUS: ",
+                "Succesfull, the latitude is ${location.latitude}, and the longitude is ${location.longitude}"
+            )
             latitude = location.latitude.toString()
             longitude = location.longitude.toString()
         }

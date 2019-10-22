@@ -6,6 +6,7 @@ package praneeth.com.sample.domain.data
 data class WeekForecast(
     val day: String,
     val description: String,
-    val high: Int,
-    val low: Int
+    val high: String,
+    val low: String,
+    val icon: String
 )

@@ -2,6 +2,9 @@ package praneeth.com.sample.domain.mappers
 
 
 import android.util.Log
+import praneeth.com.sample.domain.Utils.const_modSymbol
+import praneeth.com.sample.domain.Utils.const_uniCodeFarenheit
+import praneeth.com.sample.domain.Utils.const_windSpeed
 import praneeth.com.sample.domain.data.DailyForecastData
 import praneeth.com.sample.domain.data.ForecastResponse
 import praneeth.com.sample.domain.data.WeekForecast
@@ -12,9 +15,10 @@ import kotlin.collections.ArrayList
  */
 class ForecastDataMapper {
 
-    private val daysList = listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+    private val daysList =
+        listOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
 
-    fun convertToWeeklyForecastList(forecastData: ForecastResponse) : List<WeekForecast> {
+    fun convertToWeeklyForecastList(forecastData: ForecastResponse): List<WeekForecast> {
         val forecastList: ArrayList<WeekForecast> = ArrayList()
         var dayCount = Calendar.getInstance()[Calendar.DAY_OF_WEEK] - 1
 
@@ -25,18 +29,26 @@ class ForecastDataMapper {
 
             val today = daysList.get(dayCount)
             Log.d("current day", today)
-            val forecast = WeekForecast(today, data.summary, data.temperatureHigh.toInt(), data.temperatureLow.toInt())
+            val forecast = WeekForecast(
+                today,
+                data.summary,
+                data.temperatureHigh.toInt().toString() + const_uniCodeFarenheit,
+                data.temperatureLow.toInt().toString() + const_uniCodeFarenheit,
+                data.icon
+            )
             forecastList.add(forecast)
             dayCount++
         }
         return forecastList
     }
 
-    fun convertToDailyData(forecastData: ForecastResponse) : DailyForecastData {
-        return DailyForecastData(forecastData.currently.summary,
-            forecastData.currently.temperature.toString(),
-            forecastData.currently.precipProbability.toString(),
-            forecastData.currently.windSpeed.toString(),
-            forecastData.currently.icon)
+    fun convertToDailyData(forecastData: ForecastResponse): DailyForecastData {
+        return DailyForecastData(
+            forecastData.currently.summary,
+            forecastData.currently.temperature.toInt().toString() + const_uniCodeFarenheit,
+            forecastData.currently.precipProbability.toInt().toString() + const_modSymbol,
+            forecastData.currently.windSpeed.toInt().toString() + const_windSpeed,
+            forecastData.currently.icon
+        )
     }
 }

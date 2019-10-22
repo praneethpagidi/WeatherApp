@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#696969"
     tools:context=".activities.MyActivity">
 
 
@@ -26,7 +27,11 @@
         app:cardBackgroundColor="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/forecast_list"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/day_card" />
+
+    </com.google.android.material.card.MaterialCardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

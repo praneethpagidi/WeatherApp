@@ -16,14 +16,14 @@ import praneeth.com.sample.domain.mappers.ForecastImageMapper
 /**
  * Created by Praneeth on 2019-10-15.
  */
-class ForecastListAdapater(val items: List<WeekForecast>) :
-    RecyclerView.Adapter<ForecastListAdapater.ViewHolder>() {
+class ForecastListAdapter(private val items: List<WeekForecast>, private val clickListener: ListItemClickListener) :
+    RecyclerView.Adapter<ForecastListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             ViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.weekly_container, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(view, clickListener)
     }
 
     override fun getItemCount(): Int = items.size
@@ -32,26 +32,31 @@ class ForecastListAdapater(val items: List<WeekForecast>) :
         holder.bindData(items[position])
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tv_day: TextView = view.find(R.id.tv_day)
-        val iv_weather: ImageView = view.find(R.id.iv_weatherIcon)
-        val tv_tempHigh: TextView = view.find(R.id.tv_highTemp)
-        val tv_tempLow: TextView = view.find(R.id.tv_lowTemp)
-        val tv_description: TextView = view.find(R.id.tv_description)
+    class ViewHolder(view: View, private val clickListener: ListItemClickListener) : RecyclerView.ViewHolder(view) {
+        private val tvDay: TextView = view.find(R.id.tv_day)
+        private val ivWeather: ImageView = view.find(R.id.iv_weatherIcon)
+        private val tvTemphigh: TextView = view.find(R.id.tv_highTemp)
+        private val tvTemplow: TextView = view.find(R.id.tv_lowTemp)
+        private val tvDescription: TextView = view.find(R.id.tv_description)
 
         fun bindData(weekForecast: WeekForecast) {
             with(weekForecast) {
-                tv_day.text = day
-                tv_tempHigh.text = high
-                tv_tempLow.text = low
-                tv_description.text = description
-                iv_weather.setImageDrawable(
+                tvDay.text = day
+                tvTemphigh.text = high
+                tvTemplow.text = low
+                tvDescription.text = description
+                ivWeather.setImageDrawable(
                     ContextCompat.getDrawable(
                         itemView.context,
                         ForecastImageMapper.getImage(icon)
                     )
                 )
+                itemView.setOnClickListener{clickListener(this)}
             }
         }
+    }
+
+    interface ListItemClickListener {
+        operator fun invoke(weekForecast: WeekForecast)
     }
 }

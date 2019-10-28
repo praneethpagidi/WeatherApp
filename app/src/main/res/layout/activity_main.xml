@@ -7,6 +7,17 @@
     android:background="#696969"
     tools:context=".activities.MyActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/day_container"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forecast_list"
@@ -15,11 +26,11 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/day_contianer" />
+        app:layout_constraintTop_toBottomOf="@+id/day_container" />
 
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/day_contianer"
+        android:id="@+id/day_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
